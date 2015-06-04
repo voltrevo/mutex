@@ -216,7 +216,7 @@ mutex.or = function(mutexes) {
     impl.internalLocks = 0
 
     self.isLocked = function() {
-        return impl.internalLocks === 0 && impl.mutexes.every(function(m) { return m.isLocked() })
+        return impl.internalLocks !== 0 || impl.mutexes.every(function(m) { return m.isLocked() })
     }
 
     self.tryLock = function() {
@@ -236,16 +236,21 @@ mutex.or = function(mutexes) {
     }
 
     self.lock = function(condition) {
-        var attempt = self.tryLock()
-
-        if (attempt) {
-            return Promise.resolve(attempt)
-        }
-
         condition = condition || function() { return true }
-        condition = once(condition, false)
 
         impl.internalLocks++
+
+        if (!self.isLocked()) {
+            if (condition()) {
+                impl.internalLocks--
+                return Promise.resolve(self.tryLock())
+            } else {
+                impl.internalLocks--
+                return Promise.reject('condition failed')
+            }
+        }
+
+        condition = once(condition, false)
 
         return Promise.race(
             impl.mutexes.map(function(m) {
