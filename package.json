@@ -1,0 +1,26 @@
+{
+  "name": "mutex",
+  "version": "0.0.1",
+  "description": "A mutex utility for JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voltrevo/mutex.git"
+  },
+  "keywords": [
+    "mutex",
+    "synchronization",
+    "resource",
+    "sharing",
+    "lock"
+  ],
+  "author": "Andrew Morris",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/voltrevo/mutex/issues"
+  },
+  "homepage": "https://github.com/voltrevo/mutex#readme"
+}
